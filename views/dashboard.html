@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flashboard</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+  <!-- Font Awesome 6 (untuk ikon profile, rating bintang, dll) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* gaya kustom minimalis, bersih, dan modern */
+    .navbar {
+      border-bottom: 2px solid #ff4757;  /* aksen merah khas Flash */
+      background-color: white;
+    }
+    #logo {
+      height: 40px;
+      margin: 0.5rem 1rem;
+    }
+    .container {
+      max-width: 1200px;
+      margin-top: 2rem;
+      margin-bottom: 3rem;
+    }
+    /* header dashboard */
+    .dashboard-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    .dashboard-header h2 {
+      font-weight: 500;
+      font-size: 1.8rem;
+      color: #2f3542;
+      margin: 0;
+    }
+    .dashboard-header .subtitle {
+      color: #747d8c;
+      margin-top: 0.25rem;
+    }
+    /* card modul: minimalis, bayangan halus */
+    .card {
+      border-radius: 20px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.02), 0 6px 6px rgba(0, 0, 0, 0.03);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #f1f2f6;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 30px rgba(0, 0, 0, 0.05), 0 8px 12px rgba(0, 0, 0, 0.05);
+    }
+    /* kepala card: profile user */
+    .card-header {
+      display: flex;
+      align-items: center;
+      padding: 1rem 1.25rem 0.5rem 1.25rem;
+      background-color: transparent;
+      border-bottom: none;
+      box-shadow: none;
+    }
+    .card-header-title {
+      padding: 0;
+      font-weight: 500;
+      align-items: center;
+    }
+    .profile-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 42px;
+      background: linear-gradient(145deg, #ff6b81, #ff4757);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-right: 12px;
+      box-shadow: 0 4px 8px rgba(255, 71, 87, 0.2);
+    }
+    .profile-name {
+      font-weight: 600;
+      color: #1e272e;
+    }
+    .profile-role {
+      font-size: 0.75rem;
+      color: #a4b0be;
+    }
+    /* konten card */
+    .card-content {
+      padding: 0.5rem 1.25rem 0.75rem 1.25rem;
+      flex: 1;
+    }
+    .module-thumb {
+      width: 100%;
+      height: 150px;
+      background-color: #f8f9fa;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      border: 1px solid #f0f0f0;
+      color: #bdc3c7;
+      font-size: 3rem;
+    }
+    .module-title {
+      font-weight: 650;
+      font-size: 1.3rem;
+      margin-bottom: 0.3rem;
+      color: #1e272e;
+    }
+    .module-desc {
+      color: #747d8c;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      margin-bottom: 0.75rem;
+    }
+    /* rating bintang */
+    .rating-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 0.5rem 0 0.75rem 0;
+    }
+    .stars {
+      color: #ffa502;
+      letter-spacing: 2px;
+    }
+    .stars i {
+      font-size: 0.9rem;
+    }
+    .rating-value {
+      font-weight: 600;
+      color: #2f3542;
+      background: #f1f2f6;
+      padding: 2px 10px;
+      border-radius: 30px;
+      font-size: 0.8rem;
+    }
+    /* footer card */
+    .card-footer {
+      border-top: 1px solid #f0f0f0;
+      background-color: white;
+      border-radius: 0 0 20px 20px;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .card-footer .level {
+      width: 100%;
+      margin-bottom: 0;
+    }
+    .button.is-small {
+      border-radius: 40px;
+      font-size: 0.75rem;
+      padding: 0.4rem 1rem;
+      border: none;
+      font-weight: 500;
+    }
+    .button.is-success {
+      background-color: #2ed573;
+    }
+    .button.is-success:hover {
+      background-color: #26af61;
+    }
+    .button.is-danger {
+      background-color: #ff4757;
+    }
+    .button.is-info {
+      background-color: #70a1ff;
+    }
+    .button.is-light {
+      background-color: #f8f9fa;
+      color: #2f3542;
+    }
+    .footer-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #a4b0be;
+      font-size: 0.75rem;
+    }
+    .footer-info i {
+      font-size: 0.8rem;
+    }
+    /* footer utama halaman */
+    .page-footer {
+      margin-top: 3rem;
+      padding: 1.5rem;
+      text-align: center;
+      color: #a4b0be;
+      border-top: 1px solid #f0f0f0;
+    }
+    .page-footer small {
+      font-size: 0.8rem;
+    }
+    /* grid responsif */
+    .grid-modules {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.8rem;
+    }
+    /* debug / dummy logo */
+    .dummy-logo {
+      background: #ff4757;
+      color: white;
+      font-weight: bold;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar sederhana -->
+<header>
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="#">
+        <img id="logo" src="/public/image/logo.png" alt="Flash logo">
+      </a>
+      <a class="navbar-item">
+         <form action="/logout" method="POST">
+    <button type="submit" class="button">Logout</button>
+  </form>
+      </a>
+    </div>
+  </nav>
+</header>
+
+<!-- Dashboard utama container -->
+<section class="container">
+  <!-- Header Dashboard -->
+  {{if .username}}
+  <h5 class="title">Hallo {{.username}}</h5>
+  {{else}}
+  <h5 class="title">Hallo
+  Guest</h5>
+  {{end}}
+ 
+  <div class="dashboard-header">
+    <div>
+      <h2 class="title is-4">✨ Modul Terbaru</h2>
+      <p class="subtitle is-6">Nikmati pembelajaran dari kreator terbaik • <strong>4,8</strong> rata-rata rating</p>
+    </div>
+    <div class="field has-addons">
+      <p class="control">
+        <input class="input is-small" type="text" placeholder="Cari modul...">
+      </p>
+      <p class="control">
+        <a class="button is-small is-danger is-light">
+          <i class="fas fa-search"></i>
+        </a>
+      </p>
+    </div>
+  </div>
+{{if .moduls}}
+ {{range .moduls}}
+   <div class="card">
+     <div class="card-header">
+       <div class="card-header-title">
+         <div class="profile-avatar">A</div>
+          <div>
+            <span class="profile-name">{{.Author}}</span>
+            <div class="profile-role">{{.Badge}}</div>
+          </div>
+       </div>
+     </div>
+     <div class="card-image">
+       <figure class="image is-4by3 is-64x64">
+      <img src="{{.Thumbnail}}" >
+       </figure>
+     </div>
+     
+     <div class="card-content">
+        <!-- thumb gambar dummy / ikon -->
+        <div class="module-thumb">
+          
+
+        </div>
+        <h5 class="module-title">{{.Nama_Modules}}</h5>
+        <p class="module-desc">
+          {{.Deskripsi}}
+        </p>
+        <!-- Rating 4.3 -->
+        <div class="rating-wrapper">
+          <span class="stars">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+          </span>
+          <span class="rating-value">{{.RatingAve}}</span>
+          <span style="color: #a4b0be; font-size:0.8rem; margin-left: auto;"><i class="far fa-eye"></i> {{.View}}</span>
+        </div>
+      </div>
+      
+      <div class="card-footer">
+        <div class="footer-info">
+          <i class="far fa-clock"></i> Diunggah 2 jam lalu
+        </div>
+        <div class="buttons are-small">
+          <button class="button is-success is-small"><i class="fas fa-share-alt"></i></button>
+          <form action="/content/{{.ID}}" method="POST">
+            
+          <button class="button is-danger is-small" type="submit"><i class="fas fa-book-open" ></i></button>
+          </form>
+          <button class="button is-info is-small"><i class="fas fa-download"></i></button>
+        </div>
+      </div>
+   </div>
+
+
+  {{end}}
+{{else}}
+  <h5 class="title">Payah</h5>
+{{end}}
+  <!-- Grid daftar modul -->
+  <div class="grid-modules">
+    
+    <!-- KARTU MODUL 1 -->
+    {{if .moduls}}
+      {{range .moduls}}
+            <div class="card">
+      <!-- Header profile user -->
+      <div class="card-header">
+        <div class="card-header-title">
+          <div class="profile-avatar">A</div>
+          <div>
+            <span class="profile-name">{{.Author}}</span>
+            <div class="profile-role">{{.Bio}}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Konten: thumbnail, judul, deskripsi, rating -->
+      <div class="card-content">
+        <!-- thumb gambar dummy / ikon -->
+        <div class="module-thumb">
+          <img src="{{.Thumbnail}}">
+          <i class="fas fa-code fa-3x" style="color: #ff4757;"></i>
+        </div>
+        <h5 class="module-title">{{.Nama_Modules}}</h5>
+        <p class="module-desc">
+          {{.Deskripsi}}
+        </p>
+        <!-- Rating 4.3 -->
+        <div class="rating-wrapper">
+          <span class="stars">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+          </span>
+          <span class="rating-value">{{.RatingAve}}</span>
+          <span style="color: #a4b0be; font-size:0.8rem; margin-left: auto;"><i class="far fa-eye"></i> {{.View}}</span>
+        </div>
+      </div>
+
+      <!-- Footer: informasi tambahan + tombol aksi -->
+      <div class="card-footer">
+        <div class="footer-info">
+          <i class="far fa-clock"></i> Diunggah 2 jam lalu
+        </div>
+        <div class="buttons are-small">
+          <button class="button is-success is-small"><i class="fas fa-share-alt"></i></button>
+          <button class="button is-danger is-small"><i class="fas fa-book-open"></i></button>
+          <button class="button is-info is-small"><i class="fas fa-download"></i></button>
+        </div>
+      </div>
+    </div>
+      {{end}}
+    {{else}}
+     <h5 class="title">Modul Belum Tersedia</h5>
+  {{end}}
+     
+    <!-- KARTU MODUL 2 -->
+        <!--<div class="card">
+      <div class="card-header">
+        <div class="card-header-title">
+          <div class="profile-avatar">B</div>
+          <div>
+            <span class="profile-name">Bella Kirana</span>
+            <div class="profile-role">UI/UX Engineer • 8 modul</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-content">
+        <div class="module-thumb">
+          <i class="fas fa-paint-brush fa-3x" style="color: #ff4757;"></i>
+        </div>
+        <h5 class="module-title">Design System dengan Bulma</h5>
+        <p class="module-desc">
+          Terapkan design system konsisten menggunakan Bulma, kustomisasi variable dan komponen.
+        </p>
+        <div class="rating-wrapper">
+          <span class="stars">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+          </span>
+          <span class="rating-value">5.0</span>
+          <span style="color: #a4b0be; font-size:0.8rem; margin-left: auto;"><i class="far fa-eye"></i> 892</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="footer-info">
+          <i class="far fa-clock"></i> Diunggah 5 jam lalu
+        </div>
+        <div class="buttons are-small">
+          <button class="button is-success is-small"><i class="fas fa-share-alt"></i></button>
+          <button class="button is-danger is-small"><i class="fas fa-book-open"></i></button>
+          <button class="button is-info is-small"><i class="fas fa-download"></i></button>
+        </div>
+      </div>
+    </div>-->
+
+    <!-- KARTU MODUL 3 -->
+        <!--<div class="card">
+      <div class="card-header">
+        <div class="card-header-title">
+          <div class="profile-avatar">R</div>
+          <div>
+            <span class="profile-name">Rizky Fauzi</span>
+            <div class="profile-role">Backend Lead • 21 modul</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-content">
+        <div class="module-thumb">
+          <i class="fas fa-database fa-3x" style="color: #ff4757;"></i>
+        </div>
+        <h5 class="module-title">Docker untuk Developer</h5>
+        <p class="module-desc">
+          Containerize aplikasi, docker-compose, dan deployment sederhana untuk pemula.
+        </p>
+        <div class="rating-wrapper">
+          <span class="stars">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+          </span>
+          <span class="rating-value">4.1</span>
+          <span style="color: #a4b0be; font-size:0.8rem; margin-left: auto;"><i class="far fa-eye"></i> 156</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="footer-info">
+          <i class="far fa-clock"></i> Diunggah kemarin
+        </div>
+        <div class="buttons are-small">
+          <button class="button is-success is-small"><i class="fas fa-share-alt"></i></button>
+          <button class="button is-danger is-small"><i class="fas fa-book-open"></i></button>
+          <button class="button is-info is-small"><i class="fas fa-download"></i></button>
+        </div>
+      </div>
+    </div>-->
+
+    <!-- KARTU MODUL 4 (tambahan, rating 4,3 contoh lain) -->
+    <!--<div class="card">
+      <div class="card-header">
+        <div class="card-header-title">
+          <div class="profile-avatar">S</div>
+          <div>
+            <span class="profile-name">Sari Murni</span>
+            <div class="profile-role">Mobile Dev • 12 modul</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-content">
+        <div class="module-thumb">
+          <i class="fas fa-mobile-alt fa-3x" style="color: #ff4757;"></i>
+        </div>
+        <h5 class="module-title">Flutter Dasar: Widget & State</h5>
+        <p class="module-desc">
+          Memahami fundamental Flutter, stateless vs stateful, dan contoh project sederhana.
+        </p>
+        <div class="rating-wrapper">
+          <span class="stars">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+          </span>
+          <span class="rating-value">4.3</span>
+          <span style="color: #a4b0be; font-size:0.8rem; margin-left: auto;"><i class="far fa-eye"></i> 421</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="footer-info">
+          <i class="far fa-clock"></i> Diunggah 3 hari lalu
+        </div>
+        <div class="buttons are-small">
+          <button class="button is-success is-small"><i class="fas fa-share-alt"></i></button>
+          <button class="button is-danger is-small"><i class="fas fa-book-open"></i></button>
+          <button class="button is-info is-small"><i class="fas fa-download"></i></button>
+        </div>
+      </div>
+    </div>-->
+  </div>
+
+  <!-- pesan jika ingin tambah modul -->
+  <div class="has-text-centered mt-6">
+    <button class="button is-danger is-light is-medium" onclick="window.location.href='/profile'">
+      <i class="fas fa-plus-circle"></i> &nbsp; Unggah modulmu sendiri
+    </button>
+  </div>
+</section>
+
+<!-- Footer halaman -->
+<footer class="page-footer">
+  <p><img src="/public/image/logo.png" alt="flash" style="height:20px;"></p>
+  <small>© 2026 Flash  <br> For Competitive Programmer </small>
+</footer>
+
+</body>
+</html>

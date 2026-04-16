@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+</head>
+<link rel="stylesheet" href="/public/css/bulma.min.css">
+<style type="text/css" media="all">
+  .label{
+
+  }
+</style>
+<body>
+<div class="columns">
+  <div class="column">
+
+  </div>
+  <div class="columns">
+  <form action="/login" method="POST">
+    <div class="column">
+      <img src="/public/image/logo.png" class="image is-3by4 is-60x80" />
+    </div>
+    <div class="column ">
+      <div class="field">
+        <label for="" class="label m-3">Username</label>
+        <div class="control ">
+            <input class="input mx-3" type="text" name="nama"/>
+        </div>
+
+
+      </div>
+      <div class="field">
+        <label for="" class="label m-3">Password</label>
+        <div class="control ">
+            <input class="input" type="password" name="password"/>
+        </div>
+
+
+      </div>
+      <button class="button is-danger is-fullwidth has-text-light is-rounded mx-4" style="transition: 0.3s ease-in-out;" onclick="this.classList.add('is-inverted')" type="submit">Login</button>
+      <h5>Not Have Account ?</h5>
+      <div class="columns has-text-centered">
+        <div class="column is-centered">
+          <a href="/auth/google/login" class="button is-warning is-outlined has-text-warning is-large">Google</a>
+        </div>
+        <div class="column">
+          <a href="" class="button is-dark is-outlined is-large">Github</a>
+        </div>
+      </div>
+    </div>
+  </form>
+  </div>
+</div>
+</body>
+
+</html>

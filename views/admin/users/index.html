@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+ <title>Admin Panel</title>
+    <link rel="stylesheet" href="/public/css/bulma.min.css">
+</head>
+<body>
+
+    <h1 class="title">Admin Panel</h1>
+    <button class="button is-danger is-dark is-end" onclick="document.getElementById('tamb').classList.add('is-active')">Tambah Data User </button>
+      <div class="modal" id="tamb">
+        <div class="modal-background">
+          <div class="modal-card">
+            <header class="modal-card-head">
+              <h5 class="title">Tambah Users</h5>
+              <button class="delete" onclick="document.getElementById('tamb').classList.remove('is-active')"></button>
+            </header>
+            <section class="modal-card-body">
+              <form action="/admin/add-users" method="POST">
+                <div class="field">
+                  <div class="control"><input type="text" class="input" placeholder="Username" name="username"/></div>
+                </div>
+                <div class="field">
+                  <div class="control"><input type="password" class="input" placeholder="Password" name="password"/></div>
+                </div>
+                
+              
+            </section>
+            <footer class="modal-card-foot">
+              <button class="button is-danger is-rounded is-fullwidth mx-2">Submit</button>
+              </form>
+            </footer>
+          </div>
+        </div>
+      </div>
+      <table class="table is-stripped is-fullwidth">
+        <thead>
+          
+        <tr>
+          <td>Id</td>
+          <td>Username</td>
+          <td>Level</td>
+          <td>Badge</td>
+          <td>Action</td>
+        </tr>
+        </thead>
+      <tbody>
+      {{if .users}}
+        {{range .users}}
+        <tr>
+            <td>{{.ID}}</td>
+            <td class="subtitle">{{.Username}}</td>
+            <td>Level : {{.Level}}</td>
+            <td>{{.Badge}}</td>
+            <td><button class="button is-warning" onclick="document.getElementById('edit{{.ID}}').classList.add('is-active')">Edit</button> 
+            <form action="/admin/users/delete/{{.ID}}" method="post">
+              <button class="button is-danger is-outlined" type="submit">Delete</button>
+            </form>
+            </td>
+        </tr>
+        <div class="modal" id="edit{{.ID}}">
+          <div class="modal-background">
+            </div>
+            <div class="modal-card">
+              <header class="modal-card-head">
+                <h5 class="modal-card-title">
+                  Editz
+                </h5>
+              </header>
+              <section class="modal-card-body">
+                <form action="/admin/users/update/{{.ID}}" method="POST">
+                 <div class="field">
+                  <div class="control"><input type="text" class="input" placeholder="Username" name="username" value="{{.Username}}" /></div>
+                </div>
+                <div class="field">
+                  <div class="control"><input type="password" class="input" placeholder="Password" name="password" value="{{.Password}}"/></div>
+                </div>
+                
+              
+            </section>
+            <footer class="modal-card-foot">
+              <button class="button is-danger is-rounded is-fullwidth mx-2">Submit</button>
+              </form>
+            </footer>
+            </div>
+        </div>
+        {{end}}
+            {{else}}
+            <tr>
+              <td colspan="5">Tidak ada users</td>
+            </tr>
+    {{end}}
+      </tbody>
+      </table>
+
+
+</body>
+</html>
+

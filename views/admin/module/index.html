@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modul Management</title>
+  <link rel="stylesheet" href="/public/css/bulma.min.css">
+</head>
+<body>
+  <div class="container">
+    <h5 class="title">Modul Management</h5>
+    <button class="button is-danger" onclick="document.getElementById('mod').classList.add('is-active')">Tambah Module</button>
+    
+    <!-- Modal Form -->
+    <div class="modal" id="mod">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <h5 class="modal-card-title">Add Modul</h5>
+          <button class="delete" onclick="document.getElementById('mod').classList.remove('is-active')"></button>
+        </header>
+        <form action="/admin/modul-create" method="POST" enctype="multipart/form-data">
+          <section class="modal-card-body">
+            <div class="field">
+              <label class="label">Thumbnail</label>
+              <input type="file" name="thumbnail" class="input" accept=".jpg,.png,.jpeg" required>
+            </div>
+            
+            <div class="field">
+              <label class="label">File Modul</label>
+              <input type="file" name="file" class="input" accept=".pdf,.docx,.xlsx" required>
+            </div>
+            
+            <div class="field">
+              <label class="label">Badge</label>
+              <div class="select">
+                <select name="badge" required>
+                  <option value="">Pilih Badge</option>
+                  <option value="arch">Arch</option>
+                  <option value="siphoner">Siphoner</option>
+                  <option value="geoker">Geoker</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="field">
+              <label class="label">Nama Modul</label>
+              <input type="text" class="input" name="nama_modul" placeholder="Nama Modul" required>
+            </div>
+            
+            <div class="field">
+              <label class="label">Deskripsi</label>
+              <textarea class="textarea" name="deskripsi" placeholder="Deskripsi Modul" required></textarea>
+            </div>
+            
+            <div class="field">
+              <label class="label">Kategori</label>
+              <div class="select is-fullwidth">
+                <select name="kategori" required>
+                  <option value="">Pilih kategori</option>
+                  <option value="Web Development">Web Development</option>
+                  <option value="Mobile Development">Mobile Development</option>
+                  <option value="Game Development">Game Development</option>
+                </select>
+              </div>
+            </div>
+          </section>
+          
+          <footer class="modal-card-foot">
+            <button class="button is-success" type="submit">Submit</button>
+            <button class="button" type="button" onclick="document.getElementById('mod').classList.remove('is-active')">Cancel</button>
+          </footer>
+        </form>
+      </div>
+    </div>
+    
+    <!-- Daftar Modul -->
+    <div class="columns is-multiline">
+      {{if .moduls}}
+        {{range .moduls}}
+          <div class="column is-one-third">
+            <div class="card">
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  <img src="/{{.Thumbnail}}" alt="{{.Nama_Modules}}">
+                </figure>
+              </div>
+              <div class="card-content">
+                <h5 class="title is-5">{{.Nama_Modules}}</h5>
+                <p class="subtitle">{{.Author}}</p>
+                <p>{{.View}}</p>
+               
+                <p>{{.Deskripsi}}</p>
+                <p><strong>Badge:</strong> {{.Badge}}</p>
+                <p><strong>Kategori:</strong> {{.Kategori}}</p>
+              </div>
+              <div class="card-footer">
+                <div class="card-footer-item">
+                  <form action="/admin/modul/{{.ID}}" method="POST">
+                    <button type="submit" class="button is-danger is-outlined">Delete</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        {{end}}
+      {{else}}
+        <div class="column">
+          <h5 class="subtitle">Module Belum ada!</h5>
+        </div>
+      {{end}}
+    </div>
+  </div>
+  
+  <script>
+    // Optional: Close modal with ESC key
+    document.addEventListener('keydown', function(event) {
+      if (event.key === "Escape") {
+        document.getElementById('mod').classList.remove('is-active');
+      }
+    });
+  </script>
+</body>
+</html>

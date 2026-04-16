@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+</head>
+<link rel="stylesheet" href="/public/css/bulma.min.css">
+<style type="text/css" media="all">
+  .label{
+
+  }
+</style>
+<body>
+<div class="columns">
+  <div class="column">
+
+  </div>
+  <div class="columns">
+  <form action="/register" method="post">
+    <div class="column">
+
+    </div>
+    <div class="column ">
+      <div class="field">
+        <label for="" class="label m-3">Username</label>
+        <div class="control ">
+            <input class="input mx-3" type="text" name="username"/>
+        </div>
+
+
+      </div>
+      <div class="field">
+        <label for="" class="label m-3">Password</label>
+        <div class="control ">
+            <input class="input" type="password" name="password"/>
+        </div>
+        <div class="field">
+         <div class="control">
+          <input class="input" name="email" type="email" required/>
+         </div>
+        </div>
+          <div class="field">
+            <label for="" class="label m-3">Confirm Password</label>
+            <div class="control ">
+              <input class="input" type="text" name="conf" />
+            </div>
+
+      </div>
+      <button class="button is-danger is-fullwidth has-text-light is-rounded" style="transition: 0.3s ease-in-out;" onclick="this.classList.add('is-inverted')" type="submit">Register</button>
+      <h5>Already Have Account? </h5>
+      <div class="columns">
+        <div class="column">
+          <a href=""></a>
+        </div>
+        <div class="column">
+          <a href=""></a>
+        </div>
+      </div>
+    </div>
+  </form>
+  </div>
+</div>
+</body>
+
+</html>
