@@ -46,7 +46,7 @@ func main() {
 	http.HandleFunc("/register", UserController.Register)
 	http.HandleFunc("/admin/add-users", UserController.Add)
 	http.HandleFunc("/logout", UserController.Logout)
-	http.ListenAndServe("0.0.0.0:8000", nil)
+	http.ListenAndServe(":8000", nil)
 }
 func makes(w http.ResponseWriter, r *http.Request) {
 	// Tambahkan debugging
